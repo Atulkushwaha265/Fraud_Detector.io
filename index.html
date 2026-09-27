@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Fraud Detector</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+	<main class="container">
+		<p class="eyebrow">Security check</p>
+		<h1>Fraud Detector</h1>
+		<p class="subtitle">Check a website or email address for common warning signs.</p>
+
+		<div class="tabs" role="tablist" aria-label="Check type">
+			<button class="tab-btn active" type="button" role="tab" aria-selected="true" aria-controls="url-section" onclick="switchTab('url')">Website URL</button>
+			<button class="tab-btn" type="button" role="tab" aria-selected="false" aria-controls="email-section" onclick="switchTab('email')">Email address</button>
+		</div>
+
+		<section id="url-section" class="form-section active" role="tabpanel">
+			<label for="urlInput">URL to check</label>
+			<input id="urlInput" type="url" placeholder="https://example.com" autocomplete="url">
+			<button class="action-btn" type="button" onclick="checkURL()">Analyze URL</button>
+		</section>
+
+		<section id="email-section" class="form-section" role="tabpanel" hidden>
+			<label for="emailInput">Email to check</label>
+			<input id="emailInput" type="email" placeholder="name@example.com" autocomplete="email">
+			<button class="action-btn" type="button" onclick="checkEmail()">Analyze email</button>
+		</section>
+
+		<section id="result-box" class="result-box hidden" aria-live="polite">
+			<p class="result-label">Analysis result</p>
+			<h2 id="resultStatus"></h2>
+			<div id="score-wrap" class="score-wrap hidden">
+				<div class="score-track"><span id="score-bar"></span></div>
+				<strong id="score-value"></strong>
+			</div>
+			<p id="resultDetails"></p>
+		</section>
+	</main>
+	<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

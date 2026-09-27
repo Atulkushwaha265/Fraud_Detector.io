@@ -1,0 +1,1302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Scan Result - Fraud Detector</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family:
+                Inter,
+                system-ui,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            background: #f5f7fb;
+            color: #172033;
+            min-height: 100vh;
+        }
+
+        /* =========================================
+           HEADER
+        ========================================= */
+
+        .header {
+            height: 70px;
+            background: #ffffff;
+            border-bottom: 1px solid #e5e7eb;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 40px;
+
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+
+            font-size: 22px;
+            font-weight: 800;
+            color: #1e3a8a;
+        }
+
+        .brand-icon {
+            width: 38px;
+            height: 38px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            background: #1e3a8a;
+            color: white;
+
+            border-radius: 10px;
+            font-size: 19px;
+        }
+
+        .back-btn {
+            text-decoration: none;
+
+            padding: 10px 17px;
+
+            border: 1px solid #dbe1ea;
+            border-radius: 9px;
+
+            color: #374151;
+            background: white;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition: 0.2s;
+        }
+
+        .back-btn:hover {
+            background: #f3f4f6;
+        }
+
+
+        /* =========================================
+           MAIN
+        ========================================= */
+
+        .container {
+            width: min(1200px, calc(100% - 40px));
+            margin: 35px auto 60px;
+        }
+
+        .page-title {
+            margin-bottom: 22px;
+        }
+
+        .page-title h1 {
+            font-size: 28px;
+            font-weight: 800;
+            color: #111827;
+        }
+
+        .page-title p {
+            margin-top: 6px;
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+
+        /* =========================================
+           URL CARD
+        ========================================= */
+
+        .url-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 14px;
+
+            padding: 20px 22px;
+
+            margin-bottom: 22px;
+
+            box-shadow:
+                0 4px 16px rgba(15, 23, 42, 0.04);
+        }
+
+        .label {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+
+            letter-spacing: 0.7px;
+
+            color: #6b7280;
+
+            margin-bottom: 8px;
+        }
+
+        .url {
+            font-size: 15px;
+            font-weight: 600;
+
+            word-break: break-all;
+
+            color: #1f2937;
+        }
+
+
+        /* =========================================
+           SCORE SECTION
+        ========================================= */
+
+        .score-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+
+            padding: 30px;
+
+            display: grid;
+            grid-template-columns: 210px 1fr;
+
+            gap: 35px;
+
+            align-items: center;
+
+            margin-bottom: 22px;
+
+            box-shadow:
+                0 4px 18px rgba(15, 23, 42, 0.05);
+        }
+
+        .score-circle {
+            width: 170px;
+            height: 170px;
+
+            border-radius: 50%;
+
+            margin: auto;
+
+            display: flex;
+            flex-direction: column;
+
+            justify-content: center;
+            align-items: center;
+
+            border: 12px solid #dbeafe;
+
+            background: #f8fbff;
+        }
+
+        .score-number {
+            font-size: 42px;
+            font-weight: 800;
+            color: #1e3a8a;
+        }
+
+        .score-total {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .result-status {
+            font-size: 30px;
+            font-weight: 800;
+
+            margin-bottom: 8px;
+
+            color: #15803d;
+        }
+
+        .result-description {
+            color: #6b7280;
+            line-height: 1.6;
+
+            max-width: 600px;
+        }
+
+
+        /* =========================================
+           SECTION
+        ========================================= */
+
+        .section-title {
+            font-size: 19px;
+            font-weight: 800;
+
+            margin: 30px 0 14px;
+
+            color: #111827;
+        }
+
+
+        /* =========================================
+           CHECK GRID
+        ========================================= */
+
+        .check-grid {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+        }
+
+        .check-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+            border-radius: 13px;
+
+            padding: 20px;
+
+            min-height: 150px;
+
+            box-shadow:
+                0 3px 12px rgba(15, 23, 42, 0.035);
+        }
+
+        .check-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            margin-bottom: 14px;
+        }
+
+        .check-name {
+            font-weight: 750;
+            font-size: 15px;
+        }
+
+        .check-icon {
+            width: 32px;
+            height: 32px;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            border-radius: 8px;
+
+            font-size: 14px;
+        }
+
+        .success-icon {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .warning-icon {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .danger-icon {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .info-icon {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+
+        .check-status {
+            font-size: 13px;
+            font-weight: 700;
+
+            margin-bottom: 7px;
+        }
+
+        .success {
+            color: #15803d;
+        }
+
+        .warning {
+            color: #b45309;
+        }
+
+        .danger {
+            color: #b91c1c;
+        }
+
+        .info {
+            color: #1d4ed8;
+        }
+
+        .check-description {
+            font-size: 13px;
+            line-height: 1.55;
+            color: #6b7280;
+        }
+
+
+        /* =========================================
+           INFORMATION TABLE
+        ========================================= */
+
+        .info-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 3px 12px rgba(15, 23, 42, 0.035);
+        }
+
+        .info-row {
+            display: grid;
+
+            grid-template-columns: 220px 1fr;
+
+            padding: 16px 20px;
+
+            border-bottom: 1px solid #eef0f4;
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            font-size: 13px;
+            font-weight: 700;
+            color: #6b7280;
+        }
+
+        .info-value {
+            font-size: 14px;
+            font-weight: 600;
+
+            color: #1f2937;
+
+            word-break: break-word;
+        }
+
+
+        /* =========================================
+           REDIRECT
+        ========================================= */
+
+        .redirect-card {
+            background: white;
+
+            border: 1px solid #e5e7eb;
+
+            border-radius: 14px;
+
+            padding: 22px;
+
+            box-shadow:
+                0 3px 12px rgba(15, 23, 42, 0.035);
+        }
+
+        .redirect-item {
+            position: relative;
+
+            padding: 13px 15px;
+
+            margin-bottom: 10px;
+
+            background: #f8fafc;
+
+            border: 1px solid #edf0f4;
+
+            border-radius: 9px;
+
+            font-size: 13px;
+
+            word-break: break-all;
+        }
+
+        .redirect-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .redirect-number {
+            display: inline-flex;
+
+            width: 24px;
+            height: 24px;
+
+            align-items: center;
+            justify-content: center;
+
+            margin-right: 8px;
+
+            border-radius: 50%;
+
+            background: #dbeafe;
+            color: #1d4ed8;
+
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+
+        /* =========================================
+           ACTIONS
+        ========================================= */
+
+        .actions {
+            display: flex;
+
+            justify-content: center;
+
+            gap: 12px;
+
+            margin-top: 35px;
+        }
+
+        .action-btn {
+            text-decoration: none;
+
+            padding: 12px 22px;
+
+            border-radius: 9px;
+
+            font-size: 14px;
+            font-weight: 700;
+
+            transition: 0.2s;
+        }
+
+        .primary-btn {
+            background: #1e3a8a;
+            color: white;
+        }
+
+        .primary-btn:hover {
+            background: #172f6e;
+        }
+
+        .secondary-btn {
+            background: white;
+
+            color: #374151;
+
+            border: 1px solid #dbe1ea;
+        }
+
+        .secondary-btn:hover {
+            background: #f3f4f6;
+        }
+
+
+        /* =========================================
+           FOOTER
+        ========================================= */
+
+        .footer {
+            text-align: center;
+
+            margin-top: 45px;
+
+            color: #9ca3af;
+
+            font-size: 12px;
+        }
+
+
+        /* =========================================
+           RESPONSIVE
+        ========================================= */
+
+        @media (max-width: 900px) {
+
+            .check-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .score-card {
+                grid-template-columns: 1fr;
+
+                text-align: center;
+            }
+
+            .result-description {
+                margin: auto;
+            }
+        }
+
+
+        @media (max-width: 600px) {
+
+            .header {
+                padding: 0 18px;
+            }
+
+            .brand {
+                font-size: 18px;
+            }
+
+            .container {
+                width: min(
+                    100% - 24px,
+                    1200px
+                );
+
+                margin-top: 22px;
+            }
+
+            .page-title h1 {
+                font-size: 23px;
+            }
+
+            .check-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .info-row {
+                grid-template-columns: 1fr;
+
+                gap: 5px;
+            }
+
+            .score-card {
+                padding: 22px 18px;
+            }
+
+            .score-circle {
+                width: 145px;
+                height: 145px;
+            }
+
+            .score-number {
+                font-size: 36px;
+            }
+
+            .result-status {
+                font-size: 25px;
+            }
+
+            .actions {
+                flex-direction: column;
+            }
+
+            .action-btn {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<header class="header">
+
+    <div class="brand">
+        <div class="brand-icon">🛡</div>
+        Fraud Detector
+    </div>
+
+    <a href="/" class="back-btn">
+        ← Analyze Another
+    </a>
+
+</header>
+
+
+<main class="container">
+
+    <!-- =========================================
+         TITLE
+    ========================================= -->
+
+    <div class="page-title">
+
+        <h1>URL Security Analysis</h1>
+
+        <p>
+            Detailed security and reputation analysis
+            of the submitted URL.
+        </p>
+
+    </div>
+
+
+    <!-- =========================================
+         URL
+    ========================================= -->
+
+    <div class="url-card">
+
+        <div class="label">
+            Analyzed URL
+        </div>
+
+        <div class="url">
+            {{ url }}
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         SCORE
+    ========================================= -->
+
+    <div class="score-card">
+
+        <div>
+
+            <div class="score-circle">
+
+                <div class="score-number">
+                    {{ score }}
+                </div>
+
+                <div class="score-total">
+                    / 100
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div>
+
+            <div class="label">
+                Overall Result
+            </div>
+
+            <div class="result-status">
+                {{ status }}
+            </div>
+
+            <p class="result-description">
+
+                {% if score >= 80 %}
+
+                    The URL received a high trust score based
+                    on the available security, DNS, reputation,
+                    SSL and domain checks.
+
+                {% elif score >= 40 %}
+
+                    The URL contains some indicators that
+                    require additional attention. Review the
+                    individual checks below.
+
+                {% else %}
+
+                    The URL contains multiple indicators
+                    associated with potentially unsafe behavior.
+                    Review the detailed analysis below.
+
+                {% endif %}
+
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         SECURITY CHECKS
+    ========================================= -->
+
+    <div class="section-title">
+        Security Checks
+    </div>
+
+
+    <div class="check-grid">
+
+
+        <!-- HTTPS -->
+
+        <div class="check-card">
+
+            <div class="check-header">
+
+                <div class="check-name">
+                    HTTPS
+                </div>
+
+                <div class="check-icon success-icon">
+                    ✓
+                </div>
+
+            </div>
+
+            <div class="check-status {% if is_https %}success{% else %}warning{% endif %}">
+                {% if is_https %}
+                    PASS
+                {% else %}
+                    WARNING
+                {% endif %}
+            </div>
+
+            <div class="check-description">
+
+                {% if is_https %}
+                    Secure HTTPS protocol is being used.
+                {% else %}
+                    The website is using HTTP instead of HTTPS.
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <!-- DNS -->
+
+        <div class="check-card">
+
+            <div class="check-header">
+
+                <div class="check-name">
+                    DNS Resolution
+                </div>
+
+                <div class="check-icon {% if ip_address != 'Unavailable' %}success-icon{% else %}warning-icon{% endif %}">
+                    {% if ip_address != 'Unavailable' %}✓{% else %}!{% endif %}
+                </div>
+
+            </div>
+
+            <div class="check-status {% if ip_address != 'Unavailable' %}success{% else %}warning{% endif %}">
+                {% if ip_address != 'Unavailable' %}PASS{% else %}FAILED{% endif %}
+            </div>
+
+            <div class="check-description">
+                Domain resolved successfully to:
+                <strong>{{ ip_address }}</strong>
+            </div>
+
+        </div>
+
+
+        <!-- AbuseIPDB -->
+
+        <div class="check-card">
+
+            <div class="check-header">
+
+                <div class="check-name">
+                    AbuseIPDB
+                </div>
+
+                {% if abuse_available %}
+
+                    <div class="check-icon success-icon">
+                        ✓
+                    </div>
+
+                {% else %}
+
+                    <div class="check-icon warning-icon">
+                        !
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if abuse_available %}
+
+                <div class="check-status success">
+                    {{ abuse_confidence }}% CONFIDENCE
+                </div>
+
+                <div class="check-description">
+
+                    {{ abuse_reports }}
+                    abuse reports found for this IP.
+
+                </div>
+
+            {% else %}
+
+                <div class="check-status warning">
+                    UNAVAILABLE
+                </div>
+
+                <div class="check-description">
+                    AbuseIPDB reputation could not be checked.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- SSL -->
+
+        <div class="check-card">
+
+            <div class="check-header">
+
+                <div class="check-name">
+                    SSL Certificate
+                </div>
+
+                {% if ssl_valid %}
+
+                    <div class="check-icon success-icon">
+                        ✓
+                    </div>
+
+                {% else %}
+
+                    <div class="check-icon warning-icon">
+                        !
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if ssl_valid %}
+
+                <div class="check-status success">
+                    VALID
+                </div>
+
+                <div class="check-description">
+                    Certificate is valid and active.
+                    {% if ssl_expiry_days %}
+                        Approximately
+                        {{ ssl_expiry_days }}
+                        days remaining.
+                    {% endif %}
+                </div>
+
+            {% else %}
+
+                <div class="check-status warning">
+                    CHECK FAILED
+                </div>
+
+                <div class="check-description">
+                    SSL certificate could not be fully validated.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- REDIRECT -->
+
+        <div class="check-card">
+
+            <div class="check-header">
+
+                <div class="check-name">
+                    Redirect Analysis
+                </div>
+
+                {% if redirect_count is not none %}
+
+                    <div class="check-icon info-icon">
+                        →
+                    </div>
+
+                {% else %}
+
+                    <div class="check-icon warning-icon">
+                        !
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if redirect_count is not none %}
+
+                <div class="check-status info">
+                    {{ redirect_count }} HOP(S)
+                </div>
+
+                <div class="check-description">
+                    Final destination:
+                    {{ final_url }}
+                </div>
+
+            {% else %}
+
+                <div class="check-status warning">
+                    UNAVAILABLE
+                </div>
+
+                <div class="check-description">
+                    Redirect analysis could not be completed.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- WHOIS -->
+
+        <div class="check-card">
+
+            <div class="check-header">
+
+                <div class="check-name">
+                    Domain Age
+                </div>
+
+                {% if domain_age_days is not none %}
+
+                    <div class="check-icon success-icon">
+                        ✓
+                    </div>
+
+                {% else %}
+
+                    <div class="check-icon warning-icon">
+                        !
+                    </div>
+
+                {% endif %}
+
+            </div>
+
+
+            {% if domain_age_days is not none %}
+
+                <div class="check-status success">
+                    AVAILABLE
+                </div>
+
+                <div class="check-description">
+                    Domain age:
+                    <strong>
+                        {{ domain_age_days }}
+                    </strong>
+                    days.
+                </div>
+
+            {% else %}
+
+                <div class="check-status warning">
+                    UNAVAILABLE
+                </div>
+
+                <div class="check-description">
+                    Domain registration information
+                    could not be retrieved.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================================
+         DOMAIN INFORMATION
+    ========================================= -->
+
+    <div class="section-title">
+        Domain Information
+    </div>
+
+
+    <div class="info-card">
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Domain
+            </div>
+
+            <div class="info-value">
+                {{ domain }}
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-label">
+                IP Address
+            </div>
+
+            <div class="info-value">
+                {{ ip_address }}
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Protocol
+            </div>
+
+            <div class="info-value">
+                {{ protocol | upper }}
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Domain Age
+            </div>
+
+            <div class="info-value">
+
+                {% if domain_age_days is not none %}
+
+                    {{ domain_age_days }} days
+
+                {% else %}
+
+                    Not available
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Suspicious Keywords
+            </div>
+
+            <div class="info-value">
+
+                {% if suspicious_keywords %}
+
+                    {{ suspicious_keywords | join(", ") }}
+
+                {% else %}
+
+                    None detected
+
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         ABUSEIPDB
+    ========================================= -->
+
+    <div class="section-title">
+        IP Reputation
+    </div>
+
+
+    <div class="info-card">
+
+        <div class="info-row">
+
+            <div class="info-label">
+                AbuseIPDB Confidence
+            </div>
+
+            <div class="info-value">
+
+                {% if abuse_available %}
+                    {{ abuse_confidence }}%
+                {% else %}
+                    Check unavailable
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Total Reports
+            </div>
+
+            <div class="info-value">
+
+                {% if abuse_available %}
+                    {{ abuse_reports }}
+                {% else %}
+                    Not available
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <!-- =========================================
+         SSL
+    ========================================= -->
+
+    <div class="section-title">
+        SSL Certificate
+    </div>
+
+
+    <div class="info-card">
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Status
+            </div>
+
+            <div class="info-value">
+
+                {% if ssl_valid %}
+                    Valid
+                {% else %}
+                    Validation failed / unavailable
+                {% endif %}
+
+            </div>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <div class="info-label">
+                Remaining Days
+            </div>
+
+            <div class="info-value">
+
+                {% if ssl_expiry_days %}
+                    {{ ssl_expiry_days }} days
+                {% else %}
+                    Not available
+                {% endif %}
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         REDIRECT CHAIN
+    ========================================= -->
+
+    <div class="section-title">
+        Redirect Analysis
+    </div>
+
+
+    <div class="redirect-card">
+
+        {% if redirect_chain %}
+
+            {% for redirect_url in redirect_chain %}
+
+                <div class="redirect-item">
+
+                    <span class="redirect-number">
+                        {{ loop.index }}
+                    </span>
+
+                    {{ redirect_url }}
+
+                </div>
+
+            {% endfor %}
+
+        {% else %}
+
+            <div class="redirect-item">
+
+                No redirect chain available.
+
+            </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =========================================
+         ACTIONS
+    ========================================= -->
+
+    <div class="actions">
+
+        <a
+            href="/"
+            class="action-btn primary-btn"
+        >
+            Analyze Another URL
+        </a>
+
+        <a
+            href="javascript:window.print()"
+            class="action-btn secondary-btn"
+        >
+            Print Report
+        </a>
+
+    </div>
+
+
+    <!-- =========================================
+         FOOTER
+    ========================================= -->
+
+    <div class="footer">
+
+        Fraud Detector · URL Security Analysis
+
+    </div>
+
+</main>
+
+</body>
+</html>
